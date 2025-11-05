@@ -92,7 +92,7 @@ const Projects = () => {
 
         {/* Navigation Arrows */}
         <button
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-slate-800/80 hover:bg-slate-700 text-white p-3 rounded-full transition-all duration-200 z-10 backdrop-blur-sm border border-slate-600 hover:scale-110"
+          className="absolute left-2 md:left-0 top-1/2 -translate-y-1/2 bg-slate-800/80 hover:bg-slate-700 dark:bg-slate-800/80 dark:hover:bg-slate-700 light:bg-white/90 light:hover:bg-gray-100 text-theme-primary p-3 rounded-full transition-all duration-200 z-10 backdrop-blur-sm border border-card hover:scale-110 shadow-lg"
           onClick={() => paginate(-1)}
           aria-label="Previous project"
         >
@@ -101,7 +101,7 @@ const Projects = () => {
           </svg>
         </button>
         <button
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-slate-800/80 hover:bg-slate-700 text-white p-3 rounded-full transition-all duration-200 z-10 backdrop-blur-sm border border-slate-600 hover:scale-110"
+          className="absolute right-2 md:right-0 top-1/2 -translate-y-1/2 bg-slate-800/80 hover:bg-slate-700 dark:bg-slate-800/80 dark:hover:bg-slate-700 light:bg-white/90 light:hover:bg-gray-100 text-theme-primary p-3 rounded-full transition-all duration-200 z-10 backdrop-blur-sm border border-card hover:scale-110 shadow-lg"
           onClick={() => paginate(1)}
           aria-label="Next project"
         >

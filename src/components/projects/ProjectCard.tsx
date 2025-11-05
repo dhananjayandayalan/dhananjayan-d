@@ -15,7 +15,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       transition={{ duration: 0.3 }}
     >
       {/* Project Image/Placeholder */}
-      <div className="h-48 bg-gradient-to-br from-blue-600/20 to-purple-600/20 flex items-center justify-center">
+      <div className="h-48 bg-linear-to-br from-blue-600/20 to-purple-600/20 flex items-center justify-center">
         {project.imageUrl ? (
           <img
             src={project.imageUrl}

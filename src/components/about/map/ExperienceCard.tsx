@@ -3,20 +3,17 @@ import { motion } from 'framer-motion';
 interface ExperienceCardProps {
   company: string;
   position: string;
-  period: string;
-  city: string;
-  techStack: string[];
   posX: number;
   posY: number;
 }
 
-const ExperienceCard = ({ company, position, period, city, techStack, posX, posY }: ExperienceCardProps) => {
+const ExperienceCard = ({ company, position, posX, posY }: ExperienceCardProps) => {
   return (
     <motion.div
       className="absolute bg-slate-900/95 border border-slate-600 rounded-lg p-2.5 shadow-xl z-50 backdrop-blur-sm min-w-[220px] max-w-[280px]"
       style={{
         left: `${posX}%`,
-        top: `${posY}%`,
+        top: `${posY + 20}%`,
         transform: 'translate(-50%, -120%)',
       }}
       initial={{ opacity: 0, y: 10, scale: 0.9 }}
@@ -28,7 +25,7 @@ const ExperienceCard = ({ company, position, period, city, techStack, posX, posY
         <h3 className="text-sm font-bold text-blue-400">{company}</h3>
         <p className="text-xs text-gray-300">{position}</p>
 
-        <div className="flex items-center text-xs text-gray-400">
+        {/* <div className="flex items-center text-xs text-gray-400">
           <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -55,7 +52,7 @@ const ExperienceCard = ({ company, position, period, city, techStack, posX, posY
               </span>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </motion.div>
   );

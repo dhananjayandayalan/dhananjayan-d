@@ -7,9 +7,10 @@ interface TimelineLegendItemProps {
   isHovered: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  onClick: () => void;
 }
 
-const TimelineLegendItem = ({ index, company, city, isHovered, onMouseEnter, onMouseLeave }: TimelineLegendItemProps) => {
+const TimelineLegendItem = ({ index, company, city, isHovered, onMouseEnter, onMouseLeave, onClick }: TimelineLegendItemProps) => {
   return (
     <motion.div
       className={`flex items-center space-x-2 cursor-pointer ${
@@ -17,6 +18,7 @@ const TimelineLegendItem = ({ index, company, city, isHovered, onMouseEnter, onM
       }`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={onClick}
       whileHover={{ scale: 1.05 }}
     >
       <div className="flex items-center space-x-2">

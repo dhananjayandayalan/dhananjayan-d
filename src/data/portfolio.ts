@@ -36,7 +36,7 @@ export const experiences: Experience[] = [
         lng: 70.2707
       }
     },
-    techStack: ['React', 'TypeScript', 'PostgreSQL', 'Docker', 'Kubernetes', 'AWS', 'Node.js', 'Serverless']
+    techStack: ['React', 'TypeScript', 'PostgreSQL', 'Docker', 'AWS', 'Node.js', 'Serverless']
   }
 ];
 
@@ -62,7 +62,7 @@ export const projects: Project[] = [
 export const skills: Skill[] = [
   {
     category: 'Frontend',
-    items: ['React', 'TypeScript', 'Next.js', 'Remix', 'Tailwind CSS', 'SCSS', 'Shadcn', 'Framer Motion', 'Redux', 'React Native']
+    items: ['React', 'TypeScript', 'Next.js', 'Remix', 'Tailwind CSS', 'SCSS', 'Shadcn', 'Redux', 'React Native']
   },
   {
     category: 'Backend',
@@ -74,6 +74,6 @@ export const skills: Skill[] = [
   },
   {
     category: 'Tools',
-    items: ['Git', 'Figma', 'Postman', 'Jest', 'Vitest', 'Turborepo', 'Webpack', 'Vite']
+    items: ['Git', 'Figma', 'Jest', 'Vitest', 'Turborepo', 'Webpack', 'Vite']
   }
 ];

@@ -6,9 +6,13 @@ import ConnectionLine from './map/ConnectionLine';
 import LocationPin from './map/LocationPin';
 import ExperienceCard from './map/ExperienceCard';
 import TimelineLegendItem from './map/TimelineLegendItem';
+import Modal from '../common/Modal';
+import ExperienceCardModal from './map/ExperienceCardModal';
+import type { Experience } from '../../types';
 
 const ExperienceMap = () => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null);
 
   // Convert lat/lng to SVG coordinates using equirectangular projection
   const getPosition = (lat: number, lng: number) => {
@@ -59,6 +63,7 @@ const ExperienceMap = () => {
                 isHovered={hoveredId === exp.id}
                 onMouseEnter={() => setHoveredId(exp.id)}
                 onMouseLeave={() => setHoveredId(null)}
+                onClick={() => setSelectedExperience(exp)}
                 delay={index * 0.5}
               />
             );
@@ -74,9 +79,6 @@ const ExperienceMap = () => {
                 <ExperienceCard
                   company={exp.company}
                   position={exp.position}
-                  period={exp.period}
-                  city={exp.location.city}
-                  techStack={exp.techStack}
                   posX={pos.x}
                   posY={pos.y}
                 />
@@ -102,9 +104,26 @@ const ExperienceMap = () => {
             isHovered={hoveredId === exp.id}
             onMouseEnter={() => setHoveredId(exp.id)}
             onMouseLeave={() => setHoveredId(null)}
+            onClick={() => setSelectedExperience(exp)}
           />
         ))}
       </motion.div>
+
+      {/* Modal for Experience Details */}
+      <Modal
+        isOpen={selectedExperience !== null}
+        onClose={() => setSelectedExperience(null)}
+      >
+        {selectedExperience && (
+          <ExperienceCardModal
+            company={selectedExperience.company}
+            position={selectedExperience.position}
+            period={selectedExperience.period}
+            city={selectedExperience.location.city}
+            techStack={selectedExperience.techStack}
+          />
+        )}
+      </Modal>
     </div>
   );
 };

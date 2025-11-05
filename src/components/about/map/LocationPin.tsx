@@ -6,23 +6,25 @@ interface LocationPinProps {
   isHovered: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  onClick: () => void;
   delay: number;
 }
 
-const LocationPin = ({ x, y, isHovered, onMouseEnter, onMouseLeave, delay }: LocationPinProps) => {
+const LocationPin = ({ x, y, isHovered, onMouseEnter, onMouseLeave, onClick, delay }: LocationPinProps) => {
   return (
     <g>
       {/* Pin Circle */}
       <motion.circle
         cx={x}
         cy={y}
-        r="1.2"
+        r="0.5"
         fill={isHovered ? "#ef4444" : "#3b82f6"}
         stroke="#fff"
         strokeWidth="0.2"
         className="cursor-pointer"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        onClick={onClick}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay, type: "spring", stiffness: 300 }}

@@ -20,7 +20,7 @@ const WorldMapBackground = () => {
           alt="World Map"
           className="w-full h-full object-contain"
           style={{
-            opacity: 0.3,
+            opacity: 0.8,
             filter: 'brightness(0.5) sepia(1) hue-rotate(180deg) saturate(3)'
           }}
         />

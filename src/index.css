@@ -27,14 +27,14 @@
     --bg-tertiary: rgb(248 250 252);
     --text-primary: rgb(15 23 42);
     --text-secondary: rgb(51 65 85);
-    --accent-from: rgb(59 130 246);
-    --accent-to: rgb(139 92 246);
+    --accent-from: rgb(37 99 235);
+    --accent-to: rgb(109 40 217);
     --card-bg: rgba(255 255 255 / 0.9);
-    --card-border: rgba(148 163 184 / 0.4);
-    --shadow: rgba(0 0 0 / 0.1);
-    --blue-400: rgb(96 165 250);
-    --blue-500: rgb(59 130 246);
-    --blue-600: rgb(37 99 235);
+    --card-border: rgba(100 116 139 / 0.5);
+    --shadow: rgba(0 0 0 / 0.15);
+    --blue-400: rgb(37 99 235);
+    --blue-500: rgb(29 78 216);
+    --blue-600: rgb(30 64 175);
   }
 
   body {
@@ -230,5 +230,39 @@
   .text-gray-600 {
     color: var(--text-secondary) !important;
     opacity: 0.5;
+  }
+
+  /* Light mode specific overrides */
+  [data-theme="light"] .bg-slate-800\/80,
+  [data-theme="light"] .bg-slate-800\/30 {
+    background-color: rgba(255 255 255 / 0.9) !important;
+    border-color: var(--card-border) !important;
+  }
+
+  [data-theme="light"] .text-gray-400 {
+    color: rgb(71 85 105) !important;
+    opacity: 1;
+  }
+
+  [data-theme="light"] .text-gray-500 {
+    color: rgb(71 85 105) !important;
+    opacity: 0.85;
+  }
+
+  [data-theme="light"] .text-gray-600 {
+    color: rgb(51 65 85) !important;
+    opacity: 1;
+  }
+
+  [data-theme="light"] .bg-blue-600\/20 {
+    background-color: color-mix(in srgb, rgb(37 99 235) 15%, transparent) !important;
+  }
+
+  [data-theme="light"] .text-blue-300 {
+    color: rgb(29 78 216) !important;
+  }
+
+  [data-theme="light"] .text-blue-400 {
+    color: rgb(29 78 216) !important;
   }
 }

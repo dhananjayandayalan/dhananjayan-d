@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import Header from './Header';
+import Footer from './Footer';
 import ThemeToggle from '../ThemeToggle';
 import { motion } from 'framer-motion';
 
@@ -19,6 +20,7 @@ const Layout = ({ children }: LayoutProps) => {
       >
         {children}
       </motion.main>
+      <Footer />
       <ThemeToggle />
     </div>
   );

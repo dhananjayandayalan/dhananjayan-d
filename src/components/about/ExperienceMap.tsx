@@ -5,16 +5,11 @@ import { experiences } from '../../data/portfolio';
 const ExperienceMap = () => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
-  // Define positions for each location on the map (percentage-based for responsiveness)
-  // This is a simplified representation - you can adjust these based on actual geography
-  const locationPositions: Record<string, { x: number; y: number }> = {
-    'Delhi': { x: 45, y: 30 },
-    'Chennai': { x: 48, y: 65 },
-    // Add more cities as needed
-  };
-
-  const getPosition = (city: string) => {
-    return locationPositions[city] || { x: 50, y: 50 };
+  // Convert lat/lng to SVG coordinates using equirectangular projection
+  const getPosition = (lat: number, lng: number) => {
+    const x = ((lng + 180) / 360) * 100;
+    const y = ((90 - lat) / 180) * 100;
+    return { x, y };
   };
 
   return (
@@ -39,11 +34,38 @@ const ExperienceMap = () => {
           viewBox="0 0 100 100"
           preserveAspectRatio="xMidYMid meet"
         >
+          {/* World Map Background */}
+          <g className="opacity-25 dark:opacity-35" fill="#3b82f6" stroke="#2563eb" strokeWidth="0.15">
+            {/* North America */}
+            <path d="M 5,20 L 8,15 L 12,12 L 15,13 L 18,15 L 20,18 L 22,20 L 24,22 L 26,25 L 28,28 L 29,32 L 28,36 L 26,40 L 24,42 L 22,43 L 20,42 L 18,40 L 16,38 L 14,36 L 12,34 L 10,30 L 8,26 L 6,22 Z" />
+
+            {/* South America */}
+            <path d="M 26,46 L 28,44 L 30,44 L 32,46 L 33,50 L 34,54 L 34,58 L 33,62 L 32,66 L 30,68 L 28,67 L 26,64 L 25,60 L 25,56 L 25,52 L 25,48 Z" />
+
+            {/* Europe */}
+            <path d="M 47,22 L 49,20 L 51,20 L 53,21 L 54,23 L 54,26 L 53,28 L 51,29 L 49,29 L 47,28 L 46,26 L 46,24 Z" />
+
+            {/* Africa */}
+            <path d="M 47,32 L 49,31 L 51,31 L 53,32 L 55,35 L 56,40 L 57,45 L 57,50 L 56,54 L 54,57 L 52,59 L 50,60 L 48,59 L 46,56 L 45,52 L 44,48 L 44,44 L 45,40 L 46,36 L 47,33 Z" />
+
+            {/* Asia */}
+            <path d="M 54,18 L 58,16 L 62,15 L 66,16 L 70,18 L 74,20 L 77,23 L 80,26 L 82,30 L 84,34 L 85,38 L 84,42 L 82,45 L 79,47 L 76,48 L 72,49 L 68,49 L 64,48 L 60,46 L 58,43 L 56,40 L 55,36 L 54,32 L 54,28 L 54,24 L 54,20 Z" />
+
+            {/* India (Indian Subcontinent) */}
+            <path d="M 66,36 L 68,34 L 70,33 L 72,34 L 73,36 L 74,40 L 74,44 L 73,47 L 71,49 L 69,50 L 67,49 L 66,46 L 65,42 L 65,38 Z" />
+
+            {/* Australia */}
+            <path d="M 76,56 L 78,54 L 81,54 L 84,56 L 86,59 L 87,62 L 86,65 L 84,67 L 81,68 L 78,67 L 76,64 L 75,61 L 75,58 Z" />
+
+            {/* Greenland */}
+            <path d="M 30,8 L 33,6 L 36,6 L 38,8 L 39,11 L 38,14 L 36,16 L 33,16 L 30,14 L 29,11 Z" />
+          </g>
+
           {/* Connecting Arrows */}
           {experiences.map((exp, index) => {
             if (index === experiences.length - 1) return null;
-            const currentPos = getPosition(exp.location.city);
-            const nextPos = getPosition(experiences[index + 1].location.city);
+            const currentPos = getPosition(exp.location.coordinates.lat, exp.location.coordinates.lng);
+            const nextPos = getPosition(experiences[index + 1].location.coordinates.lat, experiences[index + 1].location.coordinates.lng);
 
             return (
               <motion.g key={`arrow-${exp.id}`}>
@@ -78,7 +100,7 @@ const ExperienceMap = () => {
 
           {/* Location Pins */}
           {experiences.map((exp, index) => {
-            const pos = getPosition(exp.location.city);
+            const pos = getPosition(exp.location.coordinates.lat, exp.location.coordinates.lng);
             return (
               <g key={exp.id}>
                 {/* Pin Circle */}
@@ -86,7 +108,7 @@ const ExperienceMap = () => {
                   cx={pos.x}
                   cy={pos.y}
                   r="2"
-                  fill={hoveredId === exp.id ? "#8b5cf6" : "#3b82f6"}
+                  fill={hoveredId === exp.id ? "#ef4444" : "#3b82f6"}
                   stroke="#fff"
                   strokeWidth="0.3"
                   className="cursor-pointer"
@@ -104,7 +126,7 @@ const ExperienceMap = () => {
                     cy={pos.y}
                     r="2"
                     fill="none"
-                    stroke="#8b5cf6"
+                    stroke="#ef4444"
                     strokeWidth="0.3"
                     initial={{ r: 2, opacity: 0.8 }}
                     animate={{ r: 4, opacity: 0 }}
@@ -118,7 +140,7 @@ const ExperienceMap = () => {
 
         {/* Experience Cards - Absolute positioned based on pins */}
         {experiences.map((exp) => {
-          const pos = getPosition(exp.location.city);
+          const pos = getPosition(exp.location.coordinates.lat, exp.location.coordinates.lng);
           return (
             <AnimatePresence key={exp.id}>
               {hoveredId === exp.id && (

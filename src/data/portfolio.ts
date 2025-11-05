@@ -1,43 +1,42 @@
 import type { Experience, Project, Skill } from '../types';
 
 export const personalInfo = {
-  name: 'Your Name',
+  name: 'Dhananjayan D',
   title: 'Full Stack Developer',
-  email: 'your.email@example.com',
-  linkedIn: 'https://linkedin.com/in/yourprofile',
+  email: 'dhananjayan.dayalan@gmail.com',
+  linkedIn: 'https://linkedin.com/in/dhananjayandayalan',
   summary: `Passionate Full Stack Developer with expertise in building scalable web applications.
-  Experienced in modern JavaScript frameworks, cloud technologies, and agile development practices.
-  Dedicated to writing clean, maintainable code and delivering exceptional user experiences.`
+  Experienced in modern JavaScript frameworks. Dedicated to writing clean, maintainable code and delivering exceptional user experiences.`
 };
 
 export const experiences: Experience[] = [
   {
     id: 1,
-    company: 'First Company',
-    position: 'Software Developer',
-    period: 'Jan 2020 - Dec 2021',
+    company: 'Avizva Solutions',
+    position: 'Development Engineer - Frontend Technologies',
+    period: 'Sep 2021 - August 2025',
     location: {
       city: 'Delhi',
       coordinates: {
-        lat: 28.6139,
-        lng: 77.2090
+        lat: 30.6139,
+        lng: 68.2090
       }
     },
-    techStack: ['React', 'Node.js', 'MongoDB', 'AWS']
+    techStack: ['React', 'Node.js', 'MongoDB', 'AWS', 'Typescript', 'Redux', 'Express', 'Jest', 'Micro-frontend']
   },
   {
     id: 2,
-    company: 'Second Company',
-    position: 'Senior Software Developer',
-    period: 'Jan 2022 - Present',
+    company: 'Tata Consultancy Services',
+    position: 'Systems Engineer - C1 Grade',
+    period: 'Sept 2025 - Present',
     location: {
       city: 'Chennai',
       coordinates: {
-        lat: 13.0827,
-        lng: 80.2707
+        lat: 15.0827,
+        lng: 70.2707
       }
     },
-    techStack: ['React', 'TypeScript', 'PostgreSQL', 'Docker', 'Kubernetes']
+    techStack: ['React', 'TypeScript', 'PostgreSQL', 'Docker', 'Kubernetes', 'AWS', 'Node.js', 'Serverless']
   }
 ];
 
@@ -57,32 +56,24 @@ export const projects: Project[] = [
     techStack: ['React', 'Firebase', 'Tailwind CSS'],
     githubUrl: 'https://github.com/yourusername/task-manager',
     liveUrl: 'https://your-task-app.com'
-  },
-  {
-    id: 3,
-    name: 'Weather Dashboard',
-    description: 'A beautiful weather dashboard with location-based forecasts',
-    techStack: ['React', 'TypeScript', 'OpenWeather API'],
-    githubUrl: 'https://github.com/yourusername/weather-dashboard',
-    liveUrl: 'https://your-weather.com'
   }
 ];
 
 export const skills: Skill[] = [
   {
     category: 'Frontend',
-    items: ['React', 'TypeScript', 'Next.js', 'Tailwind CSS', 'Framer Motion']
+    items: ['React', 'TypeScript', 'Next.js', 'Remix', 'Tailwind CSS', 'SCSS', 'Shadcn', 'Framer Motion', 'Redux', 'React Native']
   },
   {
     category: 'Backend',
-    items: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB', 'Redis']
+    items: ['Node.js', 'Nest.js', 'Express', 'PostgreSQL', 'MongoDB', 'Redis']
   },
   {
     category: 'DevOps',
-    items: ['Docker', 'Kubernetes', 'AWS', 'GitHub Actions', 'Nginx']
+    items: ['Docker', 'AWS', 'GitHub Actions']
   },
   {
     category: 'Tools',
-    items: ['Git', 'VS Code', 'Figma', 'Postman', 'Jest']
+    items: ['Git', 'Figma', 'Postman', 'Jest', 'Vitest', 'Turborepo', 'Webpack', 'Vite']
   }
 ];

@@ -39,7 +39,7 @@ const About = () => {
           My <span className="text-gradient">Journey</span>
         </h2>
         <ExperienceMap />
-        <p className='text-center text-xs my-1.5 text-theme-secondary opacity-70 font-light'>*Try <span className='text-gradient font-bold'>Clicking</span> (or) <span className='text-gradient font-bold'>Hovering</span> both Company Name and Location Pin</p>
+        <p className='text-center text-xs my-1.5 text-theme-secondary opacity-70 font-light'>*Try <span className='text-gradient font-bold'>Clicking</span> (or) <span className='text-gradient font-bold'>Hovering</span> on both Company Name and Location Pin</p>
       </motion.section>
 
       {/* Skills */}

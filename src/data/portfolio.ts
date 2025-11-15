@@ -1,4 +1,4 @@
-import type { Experience, Project, Skill } from '../types';
+import type { Experience, Project, Skill, ProjectCategory } from '../types';
 
 export const personalInfo = {
   name: 'Dhananjayan D',
@@ -56,6 +56,36 @@ export const projects: Project[] = [
     techStack: ['React', 'Firebase', 'Tailwind CSS'],
     githubUrl: 'https://github.com/yourusername/task-manager',
     liveUrl: 'https://your-task-app.com'
+  }
+];
+
+export const projectCategories: ProjectCategory[] = [
+  {
+    id: 'hobby',
+    name: 'Hobby Projects',
+    projects: [
+      {
+        id: 1,
+        name: 'E-Commerce Platform',
+        description: 'A full-featured e-commerce platform with payment integration',
+        techStack: ['React', 'Node.js', 'MongoDB', 'Stripe'],
+        githubUrl: 'https://github.com/yourusername/ecommerce',
+        liveUrl: 'https://your-ecommerce.com'
+      },
+      {
+        id: 2,
+        name: 'Task Management App',
+        description: 'A collaborative task management application with real-time updates',
+        techStack: ['React', 'Firebase', 'Tailwind CSS'],
+        githubUrl: 'https://github.com/yourusername/task-manager',
+        liveUrl: 'https://your-task-app.com'
+      }
+    ]
+  },
+  {
+    id: 'frontend-mentor',
+    name: 'Frontend Mentor Challenges',
+    projects: []
   }
 ];
 

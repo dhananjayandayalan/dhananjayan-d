@@ -1,10 +1,12 @@
+'use client';
+
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ProjectCard from '../components/projects/ProjectCard';
-import TabSwitch from '../components/projects/TabSwitch';
-import { projectCategories } from '../data/portfolio';
+import ProjectCard from '@/components/projects/ProjectCard';
+import TabSwitch from '@/components/projects/TabSwitch';
+import { projectCategories } from '@/data/portfolio';
 
-const Projects = () => {
+export default function Projects() {
   const [activeTab, setActiveTab] = useState(projectCategories[0]?.id || 'hobby');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -214,6 +216,4 @@ const Projects = () => {
       </div>
     </div>
   );
-};
-
-export default Projects;
+}

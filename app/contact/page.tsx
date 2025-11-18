@@ -1,8 +1,10 @@
-import { motion } from 'framer-motion';
-import ContactForm from '../components/contact/ContactForm';
-import ContactCard from '../components/contact/ContactCard';
+'use client';
 
-const Contact = () => {
+import { motion } from 'framer-motion';
+import ContactForm from '@/components/contact/ContactForm';
+import ContactCard from '@/components/contact/ContactCard';
+
+export default function Contact() {
   return (
     <div className="max-w-6xl mx-auto">
       <motion.div
@@ -32,6 +34,4 @@ const Contact = () => {
       </div>
     </div>
   );
-};
-
-export default Contact;
+}

@@ -1,9 +1,11 @@
-import { motion } from 'framer-motion';
-import { personalInfo } from '../data/portfolio';
-import ExperienceMap from '../components/about/ExperienceMap';
-import Skills from '../components/about/Skills';
+'use client';
 
-const About = () => {
+import { motion } from 'framer-motion';
+import { personalInfo } from '@/data/portfolio';
+import ExperienceMap from '@/components/about/ExperienceMap';
+import Skills from '@/components/about/Skills';
+
+export default function About() {
   return (
     <div className="space-y-16">
       {/* Professional Summary */}
@@ -55,6 +57,4 @@ const About = () => {
       </motion.section>
     </div>
   );
-};
-
-export default About;
+}

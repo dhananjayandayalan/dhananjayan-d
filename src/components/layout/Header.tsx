@@ -1,10 +1,14 @@
-import { NavLink } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { personalInfo } from '../../data/portfolio';
 import { useState } from 'react';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const navLinks = [
     { path: '/about', label: 'About' },
@@ -27,9 +31,9 @@ const Header = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <NavLink to="/about" className="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity">
+            <Link href="/about" className="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity">
               {personalInfo.name}
-            </NavLink>
+            </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -39,27 +43,28 @@ const Header = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            {navLinks.map((link, index) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                className={({ isActive }) =>
-                  `text-lg font-medium transition-all duration-200 ${
+            {navLinks.map((link, index) => {
+              const isActive = pathname === link.path;
+              return (
+                <Link
+                  key={link.path}
+                  href={link.path}
+                  className={`text-lg font-medium transition-all duration-200 ${
                     isActive
                       ? 'text-blue-500 border-b-2 border-blue-500'
                       : 'text-gray-300 hover:text-white hover:border-b-2 hover:border-gray-400'
-                  }`
-                }
-              >
-                <motion.span
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
+                  }`}
                 >
-                  {link.label}
-                </motion.span>
-              </NavLink>
-            ))}
+                  <motion.span
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + index * 0.1 }}
+                  >
+                    {link.label}
+                  </motion.span>
+                </Link>
+              );
+            })}
           </motion.div>
 
           {/* Mobile Menu Button */}
@@ -101,22 +106,23 @@ const Header = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
           >
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `block py-2 px-4 rounded transition-colors ${
+            {navLinks.map((link) => {
+              const isActive = pathname === link.path;
+              return (
+                <Link
+                  key={link.path}
+                  href={link.path}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block py-2 px-4 rounded transition-colors ${
                     isActive
                       ? 'bg-blue-600 text-white'
                       : 'text-gray-300 hover:bg-slate-700'
-                  }`
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </motion.div>
         )}
       </nav>

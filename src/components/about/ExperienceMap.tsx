@@ -23,7 +23,7 @@ const ExperienceMap = () => {
   return (
     <div className="relative w-full max-w-5xl mx-auto">
       {/* Map Container */}
-      <div className="relative bg-slate-800/30 rounded-2xl p-8 md:p-12 border border-slate-700 overflow-hidden">
+      <div className="relative bg-brutal-white dark:bg-brutal-black rounded-none p-8 md:p-12 border-4 border-brutal-black dark:border-brutal-white overflow-hidden shadow-brutal-lg dark:shadow-brutal-lg-light">
         <WorldMapBackground />
 
         {/* Map SVG */}
@@ -92,7 +92,7 @@ const ExperienceMap = () => {
         className="mt-8 flex flex-wrap justify-center gap-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
+        transition={{ duration: 0.1, ease: 'linear' }}
       >
         {experiences.map((exp, index) => (
           <TimelineLegendItem

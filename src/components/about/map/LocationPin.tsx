@@ -18,16 +18,16 @@ const LocationPin = ({ x, y, isHovered, onMouseEnter, onMouseLeave, onClick, del
         cx={x}
         cy={y}
         r="0.5"
-        fill={isHovered ? "#ef4444" : "#3b82f6"}
-        stroke="#fff"
-        strokeWidth="0.2"
+        fill={isHovered ? "#FF1493" : "#00E5FF"}
+        stroke="#000"
+        strokeWidth="0.3"
         className="cursor-pointer"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onClick={onClick}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{ delay, type: "spring", stiffness: 300 }}
+        transition={{ duration: 0.1, ease: 'linear' }}
         whileHover={{ scale: 1.5 }}
       />
       {/* Pulse Animation */}
@@ -37,11 +37,11 @@ const LocationPin = ({ x, y, isHovered, onMouseEnter, onMouseLeave, onClick, del
           cy={y}
           r="1.2"
           fill="none"
-          stroke="#ef4444"
-          strokeWidth="0.2"
+          stroke="#FF1493"
+          strokeWidth="0.3"
           initial={{ r: 1.2, opacity: 0.8 }}
           animate={{ r: 3, opacity: 0 }}
-          transition={{ duration: 1.5, repeat: Infinity }}
+          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
         />
       )}
     </g>

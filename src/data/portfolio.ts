@@ -40,25 +40,6 @@ export const experiences: Experience[] = [
   }
 ];
 
-export const projects: Project[] = [
-  {
-    id: 1,
-    name: 'E-Commerce Platform',
-    description: 'A full-featured e-commerce platform with payment integration',
-    techStack: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    githubUrl: 'https://github.com/yourusername/ecommerce',
-    liveUrl: 'https://your-ecommerce.com'
-  },
-  {
-    id: 2,
-    name: 'Task Management App',
-    description: 'A collaborative task management application with real-time updates',
-    techStack: ['React', 'Firebase', 'Tailwind CSS'],
-    githubUrl: 'https://github.com/yourusername/task-manager',
-    liveUrl: 'https://your-task-app.com'
-  }
-];
-
 export const projectCategories: ProjectCategory[] = [
   {
     id: 'hobby',
@@ -66,19 +47,25 @@ export const projectCategories: ProjectCategory[] = [
     projects: [
       {
         id: 1,
-        name: 'E-Commerce Platform',
-        description: 'A full-featured e-commerce platform with payment integration',
-        techStack: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-        githubUrl: 'https://github.com/yourusername/ecommerce',
-        liveUrl: 'https://your-ecommerce.com'
+        name: 'Syncify',
+        description: 'A cross-platform application that synchronizes playlists across multiple music streaming services (Spotify, Apple Music, Amazon Music, YouTube Music).',
+        techStack: ['React', 'React Native', 'Tailwind', 'Node.js', 'PostgreSQL', 'Docker', 'Turborepo', 'Spotify API', 'Apple Music API'],
+        githubUrl: 'https://github.com/dhananjayandayalan/syncify',
       },
       {
         id: 2,
-        name: 'Task Management App',
-        description: 'A collaborative task management application with real-time updates',
-        techStack: ['React', 'Firebase', 'Tailwind CSS'],
-        githubUrl: 'https://github.com/yourusername/task-manager',
-        liveUrl: 'https://your-task-app.com'
+        name: 'Cheerify',
+        description: 'A web application that generates truly unique, AI-powered personalized cheer-up notes for Twitter users by analyzing their Twitter personality and creating custom PDF messages.',
+        techStack: ['Vue', 'Node.js', 'Gemini API', 'Twitter API', 'PDF Generation'],
+        githubUrl: 'https://github.com/dhananjayandayalan/cheerify'
+      },
+      {
+        id: 3,
+        name: 'Personal Portfolio',
+        description: 'My personal portfolio website showcasing my projects, skills, and experience.',
+        techStack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vercel'],
+        githubUrl: 'https://github.com/dhananjayandayalan/cheerify',
+        liveUrl: 'https://dhananjayan-d.vercel.app'
       }
     ]
   },
@@ -92,7 +79,7 @@ export const projectCategories: ProjectCategory[] = [
 export const skills: Skill[] = [
   {
     category: 'Frontend',
-    items: ['React', 'TypeScript', 'Next.js', 'Remix', 'Tailwind CSS', 'SCSS', 'Shadcn', 'Redux', 'React Native']
+    items: ['React', 'TypeScript', 'Next.js', 'Remix', 'Vue.js', 'Tailwind CSS', 'SCSS', 'Shadcn', 'Redux', 'React Native']
   },
   {
     category: 'Backend',
@@ -104,6 +91,6 @@ export const skills: Skill[] = [
   },
   {
     category: 'Tools',
-    items: ['Git', 'Figma', 'Jest', 'Vitest', 'Turborepo', 'Webpack', 'Vite']
+    items: ['Git', 'Figma', 'Jest', 'Vitest', 'Turborepo', 'Webpack', 'Vite', 'Twilio']
   }
 ];

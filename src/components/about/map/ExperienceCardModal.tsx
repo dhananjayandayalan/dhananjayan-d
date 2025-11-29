@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
+import Modal from '../../common/Modal';
 
 interface ExperienceCardModalProps {
+  isOpen: boolean;
+  onClose: () => void;
   company: string;
   position: string;
   period: string;
@@ -8,9 +11,10 @@ interface ExperienceCardModalProps {
   techStack: string[];
 }
 
-const ExperienceCardModal = ({ company, position, period, city, techStack }: ExperienceCardModalProps) => {
+const ExperienceCardModal = ({ isOpen, onClose, company, position, period, city, techStack }: ExperienceCardModalProps) => {
   return (
-    <motion.div
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <motion.div
       className="space-y-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -80,7 +84,8 @@ const ExperienceCardModal = ({ company, position, period, city, techStack }: Exp
           Click outside or press ESC to close
         </p>
       </div>
-    </motion.div>
+      </motion.div>
+    </Modal>
   );
 };
 

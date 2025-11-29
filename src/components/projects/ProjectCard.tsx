@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import type { Project } from '../../types';
+import UnderConstructionModal from './UnderConstructionModal';
 
 interface ProjectCardProps {
   project: Project;
 }
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <motion.div
       className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all duration-300 h-full flex flex-col"
@@ -80,7 +83,7 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
             <span className="text-sm font-medium">Repository</span>
           </motion.a>
 
-          {project.liveUrl && (
+          {project.liveUrl ? (
             <motion.a
               href={project.liveUrl}
               target="_blank"
@@ -94,9 +97,28 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
               </svg>
               <span className="text-sm font-medium">Live Demo</span>
             </motion.a>
+          ) : (
+            <motion.button
+              onClick={() => setIsModalOpen(true)}
+              className="flex items-center space-x-2 text-yellow-400 hover:text-yellow-300 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2v-2zm0-6h2v4h-2v-4z" />
+              </svg>
+              <span className="text-sm font-medium">Live Demo</span>
+            </motion.button>
           )}
         </div>
       </div>
+
+      {/* Under Construction Modal */}
+      <UnderConstructionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        projectName={project.name}
+      />
     </motion.div>
   );
 };

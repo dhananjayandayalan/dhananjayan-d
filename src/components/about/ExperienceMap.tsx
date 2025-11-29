@@ -6,7 +6,6 @@ import ConnectionLine from './map/ConnectionLine';
 import LocationPin from './map/LocationPin';
 import ExperienceCard from './map/ExperienceCard';
 import TimelineLegendItem from './map/TimelineLegendItem';
-import Modal from '../common/Modal';
 import ExperienceCardModal from './map/ExperienceCardModal';
 import type { Experience } from '../../types';
 
@@ -110,20 +109,17 @@ const ExperienceMap = () => {
       </motion.div>
 
       {/* Modal for Experience Details */}
-      <Modal
-        isOpen={selectedExperience !== null}
-        onClose={() => setSelectedExperience(null)}
-      >
-        {selectedExperience && (
-          <ExperienceCardModal
-            company={selectedExperience.company}
-            position={selectedExperience.position}
-            period={selectedExperience.period}
-            city={selectedExperience.location.city}
-            techStack={selectedExperience.techStack}
-          />
-        )}
-      </Modal>
+      {selectedExperience && (
+        <ExperienceCardModal
+          isOpen={selectedExperience !== null}
+          onClose={() => setSelectedExperience(null)}
+          company={selectedExperience.company}
+          position={selectedExperience.position}
+          period={selectedExperience.period}
+          city={selectedExperience.location.city}
+          techStack={selectedExperience.techStack}
+        />
+      )}
     </div>
   );
 };

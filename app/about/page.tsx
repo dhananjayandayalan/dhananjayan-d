@@ -44,6 +44,8 @@ export default function About() {
         <p className='text-center text-xs my-3 text-brutal-gray-dark dark:text-brutal-gray-light font-bold'>*Try <span className='text-gradient font-black'>Clicking</span> (or) <span className='text-gradient font-black'>Hovering</span> on both Company Name and Location Pin</p>
       </motion.section>
 
+      {/* <img src="https://ghchart.rshah.org/dhananjayandayalan" alt="GitHub Contribution Graph" /> */}
+
       {/* Skills */}
       <motion.section
         initial={{ opacity: 0 }}

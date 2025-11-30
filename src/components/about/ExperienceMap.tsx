@@ -24,14 +24,19 @@ const ExperienceMap = () => {
   // Map interaction state
   const [viewBox, setViewBox] = useState<ViewBox>({ x: 0, y: 0, width: 100, height: 50 });
   const [isPanning, setIsPanning] = useState(false);
-  const [startPoint, setStartPoint] = useState({ x: 0, y: 0 });
-  const [initialViewBox, setInitialViewBox] = useState<ViewBox>({ x: 0, y: 0, width: 100, height: 50 });
+  const [dragTransform, setDragTransform] = useState({ x: 0, y: 0 });
+  const [forceUpdate, setForceUpdate] = useState(0);
+  const dragOffsetRef = useRef({ x: 0, y: 0 });
+  const startPointRef = useRef({ x: 0, y: 0 });
+  const initialViewBoxRef = useRef<ViewBox>({ x: 0, y: 0, width: 100, height: 50 });
 
   // Touch gesture state
   const [initialDistance, setInitialDistance] = useState<number | null>(null);
   const [initialViewBoxForPinch, setInitialViewBoxForPinch] = useState<ViewBox | null>(null);
 
   const svgRef = useRef<SVGSVGElement>(null);
+  const contentGroupRef = useRef<SVGGElement>(null);
+  const rafRef = useRef<number | null>(null);
   const defaultViewBox = { x: 0, y: 0, width: 100, height: 50 };
 
   // Convert lat/lng to SVG coordinates using equirectangular projection
@@ -55,6 +60,11 @@ const ExperienceMap = () => {
       const centerX = prev.x + prev.width / 2;
       const centerY = prev.y + prev.height / 2;
 
+      // Update card positions after zoom
+      if (hoveredId !== null) {
+        requestAnimationFrame(() => setForceUpdate(prev => prev + 1));
+      }
+
       return {
         x: centerX - newWidth / 2,
         y: centerY - newHeight / 2,
@@ -67,6 +77,10 @@ const ExperienceMap = () => {
   // Reset view to default
   const resetView = () => {
     setViewBox(defaultViewBox);
+    // Update card positions after reset
+    if (hoveredId !== null) {
+      requestAnimationFrame(() => setForceUpdate(prev => prev + 1));
+    }
   };
 
   // Get touch distance for pinch-to-zoom
@@ -85,6 +99,26 @@ const ExperienceMap = () => {
     pt.y = clientY;
     const svgP = pt.matrixTransform(svg.getScreenCTM()?.inverse());
     return { x: svgP.x, y: svgP.y };
+  };
+
+  // Convert SVG coordinates to screen position percentage relative to the map container
+  const svgToScreenPercent = (svgX: number, svgY: number) => {
+    if (!svgRef.current) return { x: 0, y: 0 };
+
+    const svg = svgRef.current;
+    const pt = svg.createSVGPoint();
+    pt.x = svgX;
+    pt.y = svgY;
+
+    // Transform SVG coordinates to screen coordinates
+    const screenPt = pt.matrixTransform(svg.getScreenCTM() || svg.createSVGMatrix());
+    const svgRect = svg.getBoundingClientRect();
+
+    // Calculate position as percentage of the SVG container
+    const percentX = ((screenPt.x - svgRect.left) / svgRect.width) * 100;
+    const percentY = ((screenPt.y - svgRect.top) / svgRect.height) * 100;
+
+    return { x: percentX, y: percentY };
   };
 
   // Mouse/Touch handlers for panning
@@ -107,8 +141,10 @@ const ExperienceMap = () => {
     }
 
     const svgPoint = screenToSVG(clientX, clientY);
-    setStartPoint(svgPoint);
-    setInitialViewBox(viewBox);
+    startPointRef.current = svgPoint;
+    initialViewBoxRef.current = viewBox;
+    dragOffsetRef.current = { x: 0, y: 0 };
+    setDragTransform({ x: 0, y: 0 });
   };
 
   const handlePointerMove = (e: React.MouseEvent<SVGSVGElement> | React.TouchEvent<SVGSVGElement>) => {
@@ -126,19 +162,63 @@ const ExperienceMap = () => {
     }
 
     const currentPoint = screenToSVG(clientX, clientY);
-    const dx = startPoint.x - currentPoint.x;
-    const dy = startPoint.y - currentPoint.y;
+    const dx = currentPoint.x - startPointRef.current.x;
+    const dy = currentPoint.y - startPointRef.current.y;
 
-    setViewBox({
-      x: initialViewBox.x + dx,
-      y: initialViewBox.y + dy,
-      width: initialViewBox.width,
-      height: initialViewBox.height,
+    // Store offset in ref (no re-render)
+    dragOffsetRef.current = { x: dx, y: dy };
+
+    // Cancel any pending animation frame
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+    }
+
+    // Use RAF to batch DOM updates and card position updates
+    rafRef.current = requestAnimationFrame(() => {
+      // Apply transform directly to DOM for instant visual feedback
+      if (contentGroupRef.current) {
+        contentGroupRef.current.style.transform = `translate(${dx}px, ${dy}px)`;
+      }
+      // Trigger card position update if a card is visible
+      if (hoveredId !== null) {
+        setForceUpdate(prev => prev + 1);
+      }
     });
   };
 
   const handlePointerUp = () => {
+    if (isPanning) {
+      // Apply the drag offset to viewBox
+      const dx = dragOffsetRef.current.x;
+      const dy = dragOffsetRef.current.y;
+
+      setViewBox({
+        x: initialViewBoxRef.current.x - dx,
+        y: initialViewBoxRef.current.y - dy,
+        width: initialViewBoxRef.current.width,
+        height: initialViewBoxRef.current.height,
+      });
+
+      // Reset transform
+      if (contentGroupRef.current) {
+        contentGroupRef.current.style.transform = '';
+      }
+      setDragTransform({ x: 0, y: 0 });
+      dragOffsetRef.current = { x: 0, y: 0 };
+
+      // Update card positions after drag ends
+      if (hoveredId !== null) {
+        requestAnimationFrame(() => setForceUpdate(prev => prev + 1));
+      }
+    }
+
     setIsPanning(false);
+
+    // Clean up any pending animation frame
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
   };
 
   // Touch handlers for pinch-to-zoom
@@ -168,11 +248,23 @@ const ExperienceMap = () => {
       const centerX = initialViewBoxForPinch.x + initialViewBoxForPinch.width / 2;
       const centerY = initialViewBoxForPinch.y + initialViewBoxForPinch.height / 2;
 
-      setViewBox({
-        x: centerX - newWidth / 2,
-        y: centerY - newHeight / 2,
-        width: newWidth,
-        height: newHeight,
+      // Cancel any pending animation frame
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+
+      // Use requestAnimationFrame for smooth pinch-to-zoom
+      rafRef.current = requestAnimationFrame(() => {
+        setViewBox({
+          x: centerX - newWidth / 2,
+          y: centerY - newHeight / 2,
+          width: newWidth,
+          height: newHeight,
+        });
+        // Update card positions during pinch-to-zoom
+        if (hoveredId !== null) {
+          setForceUpdate(prev => prev + 1);
+        }
       });
     } else if (e.touches.length === 1) {
       handlePointerMove(e);
@@ -203,6 +295,15 @@ const ExperienceMap = () => {
       svgElement.addEventListener('contextmenu', preventContextMenu);
       return () => svgElement.removeEventListener('contextmenu', preventContextMenu);
     }
+  }, []);
+
+  // Cleanup animation frame on unmount
+  useLayoutEffect(() => {
+    return () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -267,7 +368,7 @@ const ExperienceMap = () => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           onWheel={handleWheel}
-          style={{ touchAction: 'none' }}
+          style={{ touchAction: 'none', willChange: 'contents' }}
         >
           <defs>
             {/* Grid pattern for background */}
@@ -287,77 +388,82 @@ const ExperienceMap = () => {
             </pattern>
           </defs>
 
-          {/* Background Grid - covers entire map area */}
-          <rect
-            x="0"
-            y="0"
-            width="100"
-            height="50"
-            fill="url(#grid-pattern)"
-          />
+          {/* Group for all draggable content */}
+          <g ref={contentGroupRef} style={{ willChange: isPanning ? 'transform' : 'auto' }}>
+            {/* Background Grid - covers entire map area */}
+            <rect
+              x="0"
+              y="0"
+              width="100"
+              height="50"
+              fill="url(#grid-pattern)"
+            />
 
-          {/* World Map Background Image */}
-          <image
-            href="/world-map.svg"
-            x="0"
-            y="0"
-            width="100"
-            height="50"
-            opacity="0.9"
-            style={{
-              filter: theme === 'dark' ? 'invert(1)' : 'none'
-            }}
-          />
+            {/* World Map Background Image */}
+            <image
+              href="/world-map.svg"
+              x="0"
+              y="0"
+              width="100"
+              height="50"
+              opacity="0.9"
+              style={{
+                filter: theme === 'dark' ? 'invert(1)' : 'none'
+              }}
+            />
 
-          {/* Connecting Arrows */}
-          {experiences.map((exp, index) => {
-            if (index === experiences.length - 1) return null;
-            const currentPos = getPosition(exp.location.coordinates.lat, exp.location.coordinates.lng);
-            const nextPos = getPosition(experiences[index + 1].location.coordinates.lat, experiences[index + 1].location.coordinates.lng);
+            {/* Connecting Arrows */}
+            {experiences.map((exp, index) => {
+              if (index === experiences.length - 1) return null;
+              const currentPos = getPosition(exp.location.coordinates.lat, exp.location.coordinates.lng);
+              const nextPos = getPosition(experiences[index + 1].location.coordinates.lat, experiences[index + 1].location.coordinates.lng);
 
-            return (
-              <ConnectionLine
-                key={`arrow-${exp.id}`}
-                startX={currentPos.x}
-                startY={currentPos.y}
-                endX={nextPos.x}
-                endY={nextPos.y}
-                delay={index * 0.5}
-              />
-            );
-          })}
+              return (
+                <ConnectionLine
+                  key={`arrow-${exp.id}`}
+                  startX={currentPos.x}
+                  startY={currentPos.y}
+                  endX={nextPos.x}
+                  endY={nextPos.y}
+                  delay={index * 0.5}
+                />
+              );
+            })}
 
-          {/* Location Pins */}
-          {experiences.map((exp, index) => {
-            const pos = getPosition(exp.location.coordinates.lat, exp.location.coordinates.lng);
-            return (
-              <LocationPin
-                key={exp.id}
-                x={pos.x}
-                y={pos.y}
-                isHovered={hoveredId === exp.id}
-                onMouseEnter={() => setHoveredId(exp.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                onClick={() => setSelectedExperience(exp)}
-                delay={index * 0.5}
-              />
-            );
-          })}
+            {/* Location Pins */}
+            {experiences.map((exp, index) => {
+              const pos = getPosition(exp.location.coordinates.lat, exp.location.coordinates.lng);
+              return (
+                <LocationPin
+                  key={exp.id}
+                  x={pos.x}
+                  y={pos.y}
+                  isHovered={hoveredId === exp.id}
+                  onMouseEnter={() => setHoveredId(exp.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  onClick={() => setSelectedExperience(exp)}
+                  delay={index * 0.5}
+                />
+              );
+            })}
+          </g>
         </svg>
 
         {/* Experience Cards - Absolute positioned based on pins */}
-        {experiences.map((exp) => {
+        {hoveredId !== null && experiences.map((exp) => {
+          if (hoveredId !== exp.id) return null;
+
           const pos = getPosition(exp.location.coordinates.lat, exp.location.coordinates.lng);
+          const screenPos = svgToScreenPercent(pos.x, pos.y);
+
           return (
             <AnimatePresence key={exp.id}>
-              {hoveredId === exp.id && (
-                <ExperienceCard
-                  company={exp.company}
-                  position={exp.position}
-                  posX={pos.x}
-                  posY={pos.y}
-                />
-              )}
+              <ExperienceCard
+                company={exp.company}
+                position={exp.position}
+                posX={screenPos.x}
+                posY={screenPos.y}
+              />
             </AnimatePresence>
           );
         })}

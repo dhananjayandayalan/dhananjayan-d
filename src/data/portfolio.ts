@@ -19,7 +19,7 @@ export const experiences: Experience[] = [
       city: 'Delhi',
       coordinates: {
         lat: 30.6139,
-        lng: 68.2090
+        lng: 65.2090
       }
     },
     techStack: ['React', 'Node.js', 'MongoDB', 'AWS', 'Typescript', 'Redux', 'Express', 'Jest', 'Micro-frontend']
@@ -32,8 +32,8 @@ export const experiences: Experience[] = [
     location: {
       city: 'Chennai',
       coordinates: {
-        lat: 15.0827,
-        lng: 70.2707
+        lat: 14.0827,
+        lng: 68.2707
       }
     },
     techStack: ['React', 'TypeScript', 'PostgreSQL', 'Docker', 'AWS', 'Node.js', 'Serverless']

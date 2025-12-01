@@ -91,6 +91,6 @@ export const skills: Skill[] = [
   },
   {
     category: 'Tools',
-    items: ['Git', 'Figma', 'Jest', 'Vitest', 'Turborepo', 'Webpack', 'Vite', 'Twilio']
+    items: ['Git', 'Figma', 'Jest', 'Vitest', 'Turborepo', 'Webpack', 'Vite', 'Twilio Flex']
   }
 ];

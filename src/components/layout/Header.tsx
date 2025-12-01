@@ -44,7 +44,7 @@ const Header = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0, duration: 0.1 }}
           >
-            {navLinks.map((link, index) => {
+            {navLinks.map((link) => {
               const isActive = pathname === link.path;
               return (
                 <Link
@@ -113,11 +113,7 @@ const Header = () => {
                   key={link.path}
                   href={link.path}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block py-3 px-4 mb-2 border-3 transition-brutal font-bold ${
-                    isActive
-                      ? 'bg-brutal-cyan text-brutal-black border-brutal-black dark:border-brutal-white'
-                      : 'bg-brutal-white dark:bg-brutal-black text-brutal-black dark:text-brutal-white border-brutal-black dark:border-brutal-white hover:bg-brutal-pink hover:text-brutal-white'
-                  }`}
+                  className={`block py-3 px-4 mb-2 transition-brutal font-bold ${isActive && 'border-3'}`}
                 >
                   {link.label}
                 </Link>

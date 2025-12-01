@@ -36,7 +36,7 @@ export const experiences: Experience[] = [
         lng: 68.2707
       }
     },
-    techStack: ['React', 'TypeScript', 'PostgreSQL', 'Docker', 'AWS', 'Node.js', 'Serverless']
+    techStack: ['React', 'TypeScript', 'PostgreSQL', 'Docker', 'AWS', 'Node.js', 'Serverless', 'Twilio Flex']
   }
 ];
 

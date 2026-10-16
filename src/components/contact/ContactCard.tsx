@@ -1,88 +1,119 @@
-import { motion } from 'framer-motion';
+import type { ReactNode } from 'react';
 import { personalInfo } from '../../data/portfolio';
-import { useTheme } from '@/context/ThemeContext';
 
-const contactItems = [
+interface Item {
+  label: string;
+  value: string;
+  tile: string;
+  icon: ReactNode;
+  href?: string;
+  external?: boolean;
+}
+
+const iconProps = {
+  width: 20,
+  height: 20,
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 2,
+  strokeLinecap: 'round' as const,
+  strokeLinejoin: 'round' as const,
+  'aria-hidden': true
+};
+
+const items: Item[] = [
   {
-    href: `mailto:${personalInfo.email}`,
     label: 'Email',
     value: personalInfo.email,
-    iconBg: 'bg-blue-50 dark:bg-blue-500/15',
+    href: `mailto:${personalInfo.email}`,
+    tile: 'bg-line-frontend text-white',
     icon: (
-      <svg className="h-6 w-6 text-accent-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      <svg {...iconProps}>
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="m3 7 9 6 9-6" />
       </svg>
-    ),
+    )
   },
   {
-    href: personalInfo.linkedIn,
     label: 'LinkedIn',
-    value: 'Connect on LinkedIn',
-    iconBg: 'bg-teal-50 dark:bg-teal-500/15',
+    value: personalInfo.linkedInHandle,
+    href: personalInfo.linkedIn,
     external: true,
+    tile: 'bg-line-backend text-white',
     icon: (
-      <svg className="h-6 w-6 text-accent-secondary" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      <svg {...iconProps}>
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
+        <rect x="2" y="9" width="4" height="12" />
+        <circle cx="4" cy="4" r="2" />
       </svg>
-    ),
+    )
   },
+  {
+    label: 'GitHub',
+    value: personalInfo.githubHandle,
+    href: personalInfo.github,
+    external: true,
+    tile: 'bg-line-devops text-white',
+    icon: (
+      <svg {...iconProps}>
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3.1-.3 6.4-1.5 6.4-7a5.4 5.4 0 0 0-1.5-3.8 5 5 0 0 0-.1-3.8s-1.2-.3-3.9 1.5a13.4 13.4 0 0 0-7 0C6.3 1.6 5.1 2 5.1 2a5 5 0 0 0-.1 3.8A5.4 5.4 0 0 0 3.5 9.6c0 5.4 3.3 6.6 6.4 7a3.4 3.4 0 0 0-.9 2.6V23" />
+      </svg>
+    )
+  },
+  {
+    label: 'Based in',
+    value: `${personalInfo.location} · ${personalInfo.timezone}`,
+    tile: 'bg-line-tools text-[#15171c]',
+    icon: (
+      <svg {...iconProps}>
+        <path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z" />
+        <circle cx="12" cy="9" r="2.5" />
+      </svg>
+    )
+  }
 ];
 
-const ContactCard = () => {
-  const { theme } = useTheme();
+const ContactCard = () => (
+  <aside
+    aria-label="Other ways to connect"
+    className="on-band flex min-w-0 flex-[1_1_360px] flex-col gap-2 rounded-[22px] bg-band p-8 text-band-ink"
+  >
+    <h2 className="mb-[18px] font-display text-[28px] font-bold tracking-[-0.02em] [font-stretch:110%]">Connect with me</h2>
 
-  return (
-    <motion.div
-      className="rounded-3xl border border-[color:var(--border-primary)] bg-[color:var(--bg-secondary)] p-6 shadow-soft-md md:p-8"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
-    >
-      <h3 className="mb-6 text-2xl font-semibold text-gradient">Connect with me</h3>
+    {items.map((item) => {
+      const content = (
+        <>
+          <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${item.tile}`}>{item.icon}</span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-mono text-xs uppercase tracking-[0.06em] text-band-muted">{item.label}</span>
+            <span className="mt-[3px] block break-words font-medium">{item.value}</span>
+          </span>
+        </>
+      );
 
-      <div className="space-y-4">
-        {contactItems.map((item) => (
-          <motion.a
-            key={item.label}
-            href={item.href}
-            target={item.external ? '_blank' : undefined}
-            rel={item.external ? 'noopener noreferrer' : undefined}
-            className="group flex items-center gap-4 rounded-2xl border border-[color:var(--border-primary)] p-4 transition-smooth hover:-translate-y-0.5 hover:shadow-soft-sm"
-            style={{
-              backgroundColor: theme === 'light' ? 'var(--bg-secondary)' : 'rgba(15, 23, 42, 0.8)',
-            }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <div className={`rounded-2xl border border-[color:var(--border-primary)] p-3 ${item.iconBg}`}>
-              {item.icon}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-foreground-muted dark:text-foreground-subtle">{item.label}</p>
-              <p className="break-words font-medium text-foreground-primary dark:text-foreground-inverse">
-                {item.value}
-              </p>
-            </div>
-            <svg className="h-5 w-5 shrink-0 text-foreground-muted transition-smooth group-hover:text-accent-primary dark:text-foreground-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </motion.a>
-        ))}
-
-        <div className="border-t border-[color:var(--border-primary)] pt-6">
-          <p className="text-sm leading-relaxed text-foreground-muted dark:text-foreground-subtle">
-            Feel free to reach out for collaborations, opportunities, or just to say hi. I&apos;m always open to discussing new projects and ideas.
-          </p>
+      return item.href ? (
+        <a
+          key={item.label}
+          href={item.href}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener noreferrer' : undefined}
+          className="-mx-3.5 flex items-center gap-4 rounded-[14px] p-3.5 transition-colors hover:bg-band-surface"
+        >
+          {content}
+        </a>
+      ) : (
+        <div key={item.label} className="flex items-center gap-4 py-3.5">
+          {content}
         </div>
+      );
+    })}
 
-        <div className="flex items-center space-x-2 text-sm text-foreground-muted dark:text-foreground-subtle">
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>Usually responds within 24 hours</span>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
+    <p className="mt-auto border-t border-band-rule pt-[22px] text-[15px] leading-relaxed text-band-soft">
+      Feel free to reach out for collaborations, opportunities, or just to say hi. I’m always open to discussing new
+      projects and ideas.
+    </p>
+  </aside>
+);
 
 export default ContactCard;

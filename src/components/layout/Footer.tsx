@@ -1,10 +1,19 @@
+import { personalInfo } from '../../data/portfolio';
+
 const Footer = () => {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="w-full border-t border-[color:var(--border-primary)] bg-transparent py-6">
-      <div className="container mx-auto px-4 md:px-6 lg:px-8">
-        <p className="text-center text-sm text-foreground-muted dark:text-foreground-subtle">
-          Made with Next.js
-        </p>
+    <footer className="border-t border-rule">
+      <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-4 px-6 py-7 text-sm text-muted">
+        <span>
+          Made with Next.js · © {year} {personalInfo.name}
+        </span>
+        <div className="flex flex-wrap gap-5">
+          <a className="hover:text-ink" href={`mailto:${personalInfo.email}`}>Email</a>
+          <a className="hover:text-ink" href={personalInfo.linkedIn} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a className="hover:text-ink" href={personalInfo.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
       </div>
     </footer>
   );

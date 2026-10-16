@@ -1,46 +1,36 @@
-import { motion } from 'framer-motion';
 import { skills } from '../../data/portfolio';
-import { useTheme } from '@/context/ThemeContext';
+import { lineStyles } from '../../lib/lines';
 
-const Skills = () => {
-  const { theme } = useTheme();
-
-  return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {skills.map((skillCategory, index) => {
-        return (
-          <motion.div
-            key={skillCategory.category}
-            className="rounded-2xl border-2 border-[color:var(--border-primary)] p-6 shadow-soft-md"
-            style={{
-              backgroundColor:
-                theme === 'light'
-                  ? 'var(--bg-secondary)'
-                  : 'rgba(15, 23, 42, 0.8)',
-            }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-          >
-            <h3 className="mb-4 inline-block border-b-2 border-accent-primary pb-1 text-xl font-semibold text-foreground-primary dark:text-foreground-inverse">
-              {skillCategory.category}
-            </h3>
-            <ul className="space-y-3">
-              {skillCategory.items.map((skill) => (
-                <li
-                  key={skill}
-                  className="flex items-start text-sm font-medium text-foreground-muted dark:text-foreground-subtle"
-                >
-                  <span className="mr-3 flex-shrink-0 font-semibold text-accent-primary">-</span>
-                  <span>{skill}</span>
+const Skills = () => (
+  <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-5">
+    {skills.map((skill) => {
+      const style = lineStyles[skill.line];
+      return (
+        <div key={skill.category} className="overflow-hidden rounded-[18px] border border-rule bg-surface">
+          <div className={`flex items-center justify-between px-[22px] py-[18px] ${style.fill} ${style.onFill}`}>
+            <h3 className="font-display text-xl font-bold">{skill.category}</h3>
+            <span className="font-mono text-[13px]">
+              {style.code} · {String(skill.items.length).padStart(2, '0')}
+            </span>
+          </div>
+          <div className="relative py-6 pl-[50px] pr-[22px]">
+            <div className={`absolute bottom-[34px] left-[27px] top-8 w-1 rounded-sm ${style.fill}`} aria-hidden="true" />
+            <ul className="flex flex-col gap-3.5 text-[15px]">
+              {skill.items.map((item) => (
+                <li key={item} className="relative">
+                  <span
+                    aria-hidden="true"
+                    className={`absolute -left-[29px] top-1 h-3.5 w-3.5 rounded-full border-[3px] bg-surface ${style.ring}`}
+                  />
+                  {item}
                 </li>
               ))}
             </ul>
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-};
+          </div>
+        </div>
+      );
+    })}
+  </div>
+);
 
 export default Skills;

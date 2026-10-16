@@ -1,36 +1,24 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import ContactForm from '@/components/contact/ContactForm';
 import ContactCard from '@/components/contact/ContactCard';
 
 export default function Contact() {
   return (
-    <div className="max-w-6xl mx-auto">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.2, ease: 'easeOut' }}
-        className="mb-12 text-center"
-      >
-        <h1 className="mb-4 text-4xl font-extrabold md:text-5xl">
-          Get in <span className="text-gradient">Touch</span>
+    <div className="mx-auto max-w-[1240px] px-6 pb-24 pt-[72px]">
+      <div className="mb-12">
+        <p className="eyebrow mb-4 text-muted">Contact</p>
+        <h1 className="font-display text-[clamp(44px,6vw,84px)] font-extrabold leading-[0.95] tracking-[-0.035em] [font-stretch:115%]">
+          Get in touch
         </h1>
-        <p className="mx-auto max-w-2xl text-lg text-foreground-muted dark:text-foreground-subtle">
-          Have a question or want to work together? I'd love to hear from you!
+        <p className="mt-5 max-w-[560px] text-lg leading-relaxed text-ink-soft">
+          Have a question or want to work together? I’d love to hear from you.
         </p>
-      </motion.div>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Contact Form */}
-        <div>
-          <ContactForm />
-        </div>
-
-        {/* Contact Card */}
-        <div>
-          <ContactCard />
-        </div>
+      <div className="flex flex-wrap items-stretch gap-7">
+        <ContactForm />
+        <ContactCard />
       </div>
     </div>
   );

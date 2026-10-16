@@ -3,31 +3,28 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { contactSchema, type ContactFormInput, type ContactFormValues } from '@/lib/contact';
 import type { ContactApiResponse } from '../../types';
 
 const fieldClassName =
-  'w-full rounded-2xl border border-[color:var(--border-primary)] bg-[color:var(--bg-secondary)] px-4 py-3 text-foreground-primary outline-none transition-smooth placeholder:text-foreground-subtle focus:border-accent-primary focus:ring-4 focus:ring-blue-100 dark:text-foreground-inverse dark:focus:ring-blue-500/15';
+  'w-full min-h-[50px] rounded-xl border-[1.5px] border-rule bg-surface px-4 py-3 text-[15px] text-ink outline-none transition-[border-color,box-shadow] placeholder:text-muted focus:border-line-backend focus:shadow-[0_0_0_4px_rgb(31_79_209_/_0.15)] aria-[invalid=true]:border-line-frontend';
+
+const labelClassName = 'mb-2 block text-sm font-semibold';
+
+const FieldError = ({ id, message }: { id: string; message?: string }) =>
+  message ? (
+    <p id={id} className="mt-2 text-sm text-line-frontend">
+      {message}
+    </p>
+  ) : null;
 
 const ContactForm = () => {
-  const [submitState, setSubmitState] = useState<{
-    type: 'success' | 'error';
-    message: string;
-  } | null>(null);
+  const [submitState, setSubmitState] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   useEffect(() => {
-    if (!submitState) {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setSubmitState(null);
-    }, 5000);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
+    if (!submitState) return;
+    const timeoutId = window.setTimeout(() => setSubmitState(null), 5000);
+    return () => window.clearTimeout(timeoutId);
   }, [submitState]);
 
   const {
@@ -42,161 +39,136 @@ const ContactForm = () => {
   const onSubmit = async (data: ContactFormValues) => {
     setSubmitState(null);
 
-    const response = await fetch('/api/contact', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-
-    const result = (await response.json()) as ContactApiResponse;
-
-    if (!response.ok) {
-      setSubmitState({
-        type: 'error',
-        message: result.message || 'Unable to send your message right now.'
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       });
-      return;
-    }
+      const result = (await response.json()) as ContactApiResponse;
 
-    setSubmitState({
-      type: 'success',
-      message: result.message
-    });
-    reset();
-  };
+      if (!response.ok) {
+        setSubmitState({ type: 'error', message: result.message || 'Unable to send your message right now.' });
+        return;
+      }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
-    if (e.key === 'Enter' && e.target instanceof HTMLInputElement) {
-      e.preventDefault();
-      handleSubmit(onSubmit)();
+      setSubmitState({ type: 'success', message: result.message });
+      reset();
+    } catch {
+      setSubmitState({ type: 'error', message: 'Unable to send your message right now.' });
     }
   };
 
   return (
-    <motion.form
+    <form
       onSubmit={handleSubmit(onSubmit)}
-      onKeyDown={handleKeyDown}
-      className="space-y-6 rounded-3xl border border-[color:var(--border-primary)] bg-[color:var(--bg-secondary)] p-6 shadow-soft-md md:p-8"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
+      noValidate
+      aria-label="Contact form"
+      className="flex min-w-0 flex-[999_1_540px] flex-col gap-[22px] rounded-[22px] border border-rule bg-surface p-6 sm:p-9"
     >
-      <h3 className="mb-6 text-2xl font-semibold text-gradient">Send me a message</h3>
-
-      <div>
-        <label htmlFor="name" className="mb-2 block text-sm font-medium text-foreground-primary dark:text-foreground-inverse">
-          Name <span className="text-accent-primary">*</span>
-        </label>
-        <input
-          {...register('name')}
-          type="text"
-          id="name"
-          className={fieldClassName}
-          placeholder="Your name"
-        />
-        {errors.name && (
-          <motion.p
-            className="mt-2 text-sm text-rose-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
-          >
-            {errors.name.message}
-          </motion.p>
-        )}
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-[18px]">
+        <div>
+          <label htmlFor="name" className={labelClassName}>
+            Name
+          </label>
+          <input
+            {...register('name')}
+            id="name"
+            type="text"
+            autoComplete="name"
+            placeholder="Your name"
+            aria-invalid={errors.name ? 'true' : 'false'}
+            aria-describedby={errors.name ? 'name-error' : undefined}
+            className={fieldClassName}
+          />
+          <FieldError id="name-error" message={errors.name?.message} />
+        </div>
+        <div>
+          <label htmlFor="email" className={labelClassName}>
+            Email
+          </label>
+          <input
+            {...register('email')}
+            id="email"
+            type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            aria-invalid={errors.email ? 'true' : 'false'}
+            aria-describedby={errors.email ? 'email-error' : undefined}
+            className={fieldClassName}
+          />
+          <FieldError id="email-error" message={errors.email?.message} />
+        </div>
       </div>
 
       <div>
-        <label htmlFor="email" className="mb-2 block text-sm font-medium text-foreground-primary dark:text-foreground-inverse">
-          Email <span className="text-accent-primary">*</span>
-        </label>
-        <input
-          {...register('email')}
-          type="email"
-          id="email"
-          className={fieldClassName}
-          placeholder="your.email@example.com"
-        />
-        {errors.email && (
-          <motion.p
-            className="mt-2 text-sm text-rose-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
-          >
-            {errors.email.message}
-          </motion.p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="mobile" className="mb-2 block text-sm font-medium text-foreground-primary dark:text-foreground-inverse">
-          Mobile <span className="text-foreground-muted dark:text-foreground-subtle">(Optional)</span>
+        <label htmlFor="mobile" className={`${labelClassName} flex justify-between`}>
+          Mobile <span className="font-normal text-muted">Optional</span>
         </label>
         <input
           {...register('mobile')}
-          type="tel"
           id="mobile"
-          className={fieldClassName}
+          type="tel"
+          autoComplete="tel"
           placeholder="Your mobile number"
+          className={fieldClassName}
         />
       </div>
 
       <div>
-        <label htmlFor="message" className="mb-2 block text-sm font-medium text-foreground-primary dark:text-foreground-inverse">
-          Message <span className="text-accent-primary">*</span>
+        <label htmlFor="message" className={labelClassName}>
+          Message
         </label>
         <textarea
           {...register('message')}
           id="message"
-          rows={5}
-          className={`${fieldClassName} resize-none`}
-          placeholder="Your message..."
+          rows={6}
+          placeholder="Tell me a little about what you have in mind"
+          aria-invalid={errors.message ? 'true' : 'false'}
+          aria-describedby={errors.message ? 'message-error' : undefined}
+          className={`${fieldClassName} min-h-[168px] resize-y`}
         />
-        {errors.message && (
-          <motion.p
-            className="mt-2 text-sm text-rose-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
-          >
-            {errors.message.message}
-          </motion.p>
-        )}
+        <FieldError id="message-error" message={errors.message?.message} />
       </div>
 
-      <motion.button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full rounded-full border border-[color:var(--border-primary)] bg-accent-primary px-6 py-3 font-medium text-foreground-inverse shadow-soft-sm transition-smooth hover:-translate-y-0.5 hover:shadow-soft-md disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
-        whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-      >
-        {isSubmitting ? (
-          <span className="flex items-center justify-center">
-            <svg className="-ml-1 mr-3 h-5 w-5 animate-spin text-foreground-inverse" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            Sending...
-          </span>
-        ) : (
-          'Send Message'
-        )}
-      </motion.button>
-
-      {submitState && (
-        <motion.p
-          className={`text-center text-sm ${submitState.type === 'success' ? 'text-emerald-600' : 'text-rose-500'}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.2 }}
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-1.5">
+        <p className="text-[13px] text-muted">Your details are only used to reply to you.</p>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="inline-flex min-h-[50px] cursor-pointer items-center gap-2.5 rounded-full bg-ink px-[26px] text-[15px] font-semibold text-ground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {submitState.message}
-        </motion.p>
-      )}
-    </motion.form>
+          {isSubmitting ? (
+            <>
+              <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.25" strokeWidth="4" />
+                <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+              </svg>
+              Sending…
+            </>
+          ) : (
+            <>
+              Send message
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
+            </>
+          )}
+        </button>
+      </div>
+
+      <div aria-live="polite">
+        {submitState && (
+          <p
+            className={`rounded-xl px-4 py-3 text-sm font-medium ${
+              submitState.type === 'success' ? 'bg-line-devops/10 text-line-devops' : 'bg-line-frontend/10 text-line-frontend'
+            }`}
+          >
+            {submitState.message}
+          </p>
+        )}
+      </div>
+    </form>
   );
 };
 

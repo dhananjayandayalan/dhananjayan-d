@@ -81,13 +81,13 @@ export const projects: Project[] = [
   },
   {
     id: 4,
-    name: 'Real-time Collaboration PM System',
-    kind: 'Real-time system',
+    name: 'Trackr — Jira-style Issue Tracker',
+    kind: 'Event-driven system',
     accent: 'blue',
     description:
-      'Project management with live collaboration — boards update instantly over WebSockets, backed by Dockerised microservices on PostgreSQL and Redis.',
-    techStack: ['React', 'Node.js', 'Express.js', 'TypeScript', 'Redux Toolkit', 'WebSocket', 'Docker', 'PostgreSQL', 'Redis', 'Micro-Services', 'CSS'],
-    githubUrl: 'https://github.com/dhananjayandayalan/real-time-collaboration-project-management-system'
+      'Keyboard-first issue tracker with boards, sprints and search. A Spring Modulith monolith uses a transactional outbox to Kafka, which drives live board updates over SSE and Elasticsearch-powered search. Issue descriptions are edited together live via Yjs CRDTs. Built from scratch, with no generators.',
+    techStack: ['Java 25', 'Spring Boot', 'Spring Modulith', 'Kafka', 'PostgreSQL', 'Elasticsearch', 'Redis', 'React', 'TypeScript', 'TanStack Query', 'Yjs', 'Docker'],
+    githubUrl: 'https://github.com/dhananjayandayalan/trackr'
   },
   {
     id: 5,

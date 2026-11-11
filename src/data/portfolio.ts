@@ -49,6 +49,27 @@ export const experiences: Experience[] = [
 export const projects: Project[] = [
   {
     id: 1,
+    name: 'Trackr — Jira-style Issue Tracker',
+    kind: 'Event-driven system',
+    accent: 'blue',
+    description:
+      'Keyboard-first issue tracker with boards, sprints and search. A Spring Modulith monolith uses a transactional outbox to Kafka, which drives live board updates over SSE and Elasticsearch-powered search. Issue descriptions are edited together live via Yjs CRDTs. Built from scratch, with no generators.',
+    techStack: ['Java 25', 'Spring Boot', 'Spring Modulith', 'Kafka', 'PostgreSQL', 'Elasticsearch', 'Redis', 'React', 'TypeScript', 'TanStack Query', 'Yjs', 'Docker'],
+    githubUrl: 'https://github.com/dhananjayandayalan/trackr',
+    demo: {
+      title: 'Real-time boards, sprints and collaborative editing',
+      src: "/videos/trackr-demo.webm",
+      highlights: [
+        { heading: 'Keyboard-first workflow', detail: 'Creating, moving and triaging issues without touching the mouse.' },
+        { heading: 'Live board updates', detail: 'Two browsers side by side — a change in one appears in the other over SSE.' },
+        { heading: 'Editing together', detail: 'Two people typing in the same issue description, merged live with Yjs.' },
+        { heading: 'Search', detail: 'Finding issues instantly with Elasticsearch-powered search.' },
+        { heading: 'Under the hood', detail: 'Following one change from the outbox through Kafka to the board.' }
+      ]
+    }
+  },
+  {
+    id: 2,
     name: 'Syncify',
     kind: 'Cross-platform app',
     accent: 'red',
@@ -58,7 +79,7 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/dhananjayandayalan/syncify'
   },
   {
-    id: 2,
+    id: 3,
     name: 'Cheerify',
     kind: 'AI web app',
     accent: 'purple',
@@ -68,7 +89,7 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/dhananjayandayalan/cheerify'
   },
   {
-    id: 3,
+    id: 4,
     name: 'Personal Portfolio',
     kind: 'Website',
     accent: 'green',
@@ -78,25 +99,6 @@ export const projects: Project[] = [
     // TODO: point this at the portfolio repository once it is public.
     githubUrl: 'https://github.com/dhananjayandayalan/dhananjayan-d',
     liveUrl: 'https://dhananjayan-d.vercel.app'
-  },
-  {
-    id: 4,
-    name: 'Trackr — Jira-style Issue Tracker',
-    kind: 'Event-driven system',
-    accent: 'blue',
-    description:
-      'Keyboard-first issue tracker with boards, sprints and search. A Spring Modulith monolith uses a transactional outbox to Kafka, which drives live board updates over SSE and Elasticsearch-powered search. Issue descriptions are edited together live via Yjs CRDTs. Built from scratch, with no generators.',
-    techStack: ['Java 25', 'Spring Boot', 'Spring Modulith', 'Kafka', 'PostgreSQL', 'Elasticsearch', 'Redis', 'React', 'TypeScript', 'TanStack Query', 'Yjs', 'Docker'],
-    githubUrl: 'https://github.com/dhananjayandayalan/trackr'
-  },
-  {
-    id: 5,
-    name: 'Momentum UI',
-    kind: 'Component library',
-    accent: 'amber',
-    description: 'A unique set of components for a niche use case, built framework-agnostic across React, Vue, Angular and Svelte.',
-    techStack: ['React', 'Vue', 'Angular', 'Svelte', 'Storybook', 'Turborepo', 'pnpm', 'Codex', 'Claude Code'],
-    githubUrl: 'https://github.com/dhananjayandayalan/momentum-ui'
   }
 ];
 

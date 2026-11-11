@@ -1,5 +1,6 @@
 import type { Project } from '../../types';
 import { accentStyles } from '../../lib/lines';
+import ProjectDemo from './ProjectDemo';
 
 interface ProjectCardProps {
   project: Project;
@@ -32,6 +33,7 @@ const ProjectCard = ({ project, index, total }: ProjectCardProps) => {
       <div className="flex flex-1 flex-col gap-[22px] p-8">
         <h2 className="font-display text-[34px] font-bold leading-tight tracking-[-0.02em] [font-stretch:110%]">{project.name}</h2>
         <p className="max-w-[640px] text-[17px] leading-relaxed text-ink-soft">{project.description}</p>
+        <ProjectDemo project={project} />
         <div>
           <p className="eyebrow mb-2.5 text-xs text-muted">Tech stack</p>
           <ul className="flex flex-wrap gap-2 text-[13px]">

@@ -70,6 +70,16 @@ export const projects: Project[] = [
   },
   {
     id: 2,
+    name: 'Isai (இசை) — Learn Songs on Piano',
+    kind: 'Audio ML platform',
+    accent: 'amber',
+    description:
+      'Turns a song\'s audio into something you can learn on piano: key, tempo, chords and a playable two-hand arrangement. A Python pipeline separates stems with Hybrid Demucs and transcribes notes with PyTorch models. The web app plays it on a sampled grand piano with an animated keyboard that follows your MIDI keyboard. In training mode, playback waits until you play the right notes.',
+    techStack: ['Python', 'PyTorch', 'Demucs', 'librosa', 'React', 'TypeScript', 'Tone.js', 'Web MIDI', 'Supabase', 'PostgreSQL', 'Docker', 'Cloudflare Pages'],
+    githubUrl: 'https://github.com/dhananjayandayalan/isai'
+  },
+  {
+    id: 3,
     name: 'Syncify',
     kind: 'Cross-platform app',
     accent: 'red',
@@ -77,16 +87,6 @@ export const projects: Project[] = [
       'A cross-platform application that synchronizes playlists across multiple music streaming services — Spotify, Apple Music, Amazon Music and YouTube Music.',
     techStack: ['React', 'React Native', 'Tailwind', 'Node.js', 'PostgreSQL', 'Docker', 'Turborepo', 'Spotify API', 'Apple Music API'],
     githubUrl: 'https://github.com/dhananjayandayalan/syncify'
-  },
-  {
-    id: 3,
-    name: 'Cheerify',
-    kind: 'AI web app',
-    accent: 'purple',
-    description:
-      'Generates unique, AI-powered cheer-up notes for Twitter users by analysing their Twitter personality and turning it into a custom PDF message.',
-    techStack: ['Vue', 'Node.js', 'Gemini API', 'Twitter API', 'PDF Generation'],
-    githubUrl: 'https://github.com/dhananjayandayalan/cheerify'
   },
   {
     id: 4,
